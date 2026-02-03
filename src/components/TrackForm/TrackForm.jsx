@@ -14,7 +14,7 @@ const TrackForm = (props) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
   };
 
-  const handleSubmit = async (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault();
     if (props.selected) {
         props.handleUpdateTrack(formData, props.selected._id);

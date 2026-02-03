@@ -33,9 +33,13 @@ const App = () => {
   }
 
   const handleFormView = (track) => {
-    if (!track._id) setSelected(null);
-    setIsFormOpen(!isFormOpen);
-  };
+  if (track?._id) {
+    setSelected(track);     // editing
+  } else {
+    setSelected(null);      // creating
+  }
+  setIsFormOpen(!isFormOpen);      // always open form
+};
 
   const handleAddTrack = async (formData) => {
     try {
@@ -73,6 +77,22 @@ const App = () => {
     }
   };
 
+  const handleDeleteTrack = async (trackId) => {
+    try {
+      const deletedTrack = await trackService.deleteTrack(trackId);
+
+      if (deletedTrack.err) {
+        throw new Error(deletedTrack.err);
+      }
+
+      setTracks(tracks.filter((track) => track._id !== deletedTrack._id));
+      setSelected(null);
+      setIsFormOpen(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <TrackList 
@@ -80,8 +100,7 @@ const App = () => {
         handleSelect={handleSelect} 
         handleFormView={handleFormView}
         isFormOpen={isFormOpen}
-        selected={selected}
-        handleUpdateTrack={handleUpdateTrack}
+        handleDeleteTrack={handleDeleteTrack}
       />
 
       {isFormOpen ? (
@@ -91,7 +110,10 @@ const App = () => {
           handleUpdateTrack={handleUpdateTrack}
         />
       ) : (
-        <TrackDetail selected={selected} />
+        <TrackDetail 
+          selected={selected} 
+          handleFormView={handleFormView}
+        />
       )}
     </>
   );

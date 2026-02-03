@@ -21,8 +21,11 @@ const TrackList = (props) => {
                         <button onClick={() => props.handleSelect(track)}>
                             Play
                         </button>
-                        <button onClick={() => props.handleUpdateTrack(track)}>
+                        <button onClick={() => props.handleFormView(track)}>
                             Edit
+                        </button>
+                        <button onClick={() => props.handleDeleteTrack(track._id)}>
+                            Delete
                         </button>
                     </div>
                     </li>
