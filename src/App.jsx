@@ -25,7 +25,7 @@ const App = () => {
       }
     };
     fetchTracks();
-  }, []);
+  }, [isFormOpen]);
 
   const handleSelect = (track) => {
     setSelected(track);
@@ -65,12 +65,12 @@ const App = () => {
       }
 
       const updatedTracksList = tracks.map((track) => (
-        track._id !== updatedTrack._id ? track : updatedTrack
+        track._id !== updatedTrack._id ? track : updatedTrack.track
       ));
       
       setTracks(updatedTracksList);
       
-      setSelected(updatedTrack);
+      setSelected(updatedTrack.track);
       setIsFormOpen(false);
     } catch (err) {
       console.log(err);
@@ -80,12 +80,12 @@ const App = () => {
   const handleDeleteTrack = async (trackId) => {
     try {
       const deletedTrack = await trackService.deleteTrack(trackId);
-
+      
       if (deletedTrack.err) {
         throw new Error(deletedTrack.err);
       }
-
-      setTracks(tracks.filter((track) => track._id !== deletedTrack._id));
+      
+      setTracks(tracks.filter((track) => track._id !== deletedTrack.track._id));
       setSelected(null);
       setIsFormOpen(false);
     } catch (err) {
